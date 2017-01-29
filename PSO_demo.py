@@ -3,6 +3,7 @@
 # this is a small demo that visualizes the optimization steps made by the PSO module
 
 
+
 from numpy import meshgrid, linspace
 import time
 from mpl_toolkits.mplot3d import Axes3D
@@ -12,8 +13,8 @@ import imp
 mod =  imp.load_source('mod', './PSO_classe.py')
 from mod import PSO
 
-                                                                                # make up some functions to be minimized
-def wert(kord):
+
+def wert(kord):                                                                 # make up some functions to be minimized
     # return kord[0]**2+kord[1]**2
     return kord[0]**2+1000*-cos(kord[1]*2*pi/space)+1000
     # return 2+kord[1]**2/(space**2)+kord[0]**2/(space**2)-cos(2*kord[1]*2*pi/(1.2*space))-cos(2*kord[0]*2*pi/(1.2*space))
@@ -42,7 +43,7 @@ fig.show()                                                                      
 
 fak = []                                                                        # prepare upper and lower border for solution parameters
 for i in range(2):
-    fak.append({"unten":-space,"oben":space})
+    fak.append({"lower":-space,"upper":space})
 
 mypso=PSO(fak,wert,number=25, generations = 20,w=0.7448,c1=0.1699,c2=0.1950)    # create instance of PSO
 
@@ -60,8 +61,8 @@ for i in range(50):                                                             
     mypso.step()
     steptime = time.time()-stepstart_time
     plotstart_time = time.time()
-    for key,par in enumerate(mypso.swarm):        
-        pointplots[key]._offsets3d = ([par.position[0]],[par.position[1]],[wert(par.position)])   
+    for key,par in enumerate(mypso.swarm):
+        pointplots[key]._offsets3d = ([par.position[0]],[par.position[1]],[wert(par.position)])
     fig.canvas.draw()
     # time.sleep(0.25)
     print ("global best: %.10f step time: %.6f draw time: %.3f step number: %i" % (wert(mypso.G), steptime, time.time()-plotstart_time,i))
